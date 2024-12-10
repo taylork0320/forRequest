@@ -23,6 +23,7 @@ dependencies:
   flutter_svg: ^2.0.9
   smooth_page_indicator: ^1.1.0
   percent_indicator: ^4.0.1
+  flutter_native_splash: ^2.4.3
 
 dev_dependencies:
   flutter_test:
@@ -62,3 +63,4 @@ flutter:
      - assets/images/icons/
      - assets/images/banners/
      - assets/images/graphics/
+     - assets/images/splash/
