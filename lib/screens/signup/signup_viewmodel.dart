@@ -84,13 +84,18 @@ class SignupViewModel with ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
+
     _emailController.dispose();
     _password1Controller.dispose();
     _password2Controller.dispose();
+    _nameController.dispose();
+    _mobileNumberController.dispose();
 
     _emailFocusNode.dispose();
     _password1FocusNode.dispose();
     _password2FocusNode.dispose();
+    _nameFocusNode.dispose();
+    _mobileNumberFocusNode.dispose();
   }
 
   Future<bool> signUp() async {

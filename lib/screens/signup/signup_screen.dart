@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/screens/signup/signup_auth_screen.dart';
 import 'package:sasimee/screens/signup/signup_viewmodel.dart';
 import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/widgets/common_text_field.dart';
@@ -36,7 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     mediaQuery.padding.top -
                     mediaQuery.padding.bottom -
                     kToolbarHeight,
-                padding: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.only(left: 32, right: 32, bottom: 57),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,7 +90,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     _bottomLoginAndSignupLayout(),
-                    const SizedBox(height: 57),
                   ],
                 ),
               ),
@@ -120,7 +120,14 @@ class _SignupScreenState extends State<SignupScreen> {
             if (!viewModel.isSignupButtonEnabled) return;
 
             final result = await viewModel.signUp();
-            if (result) {}
+            if (!context.mounted) return;
+
+            if (result) {
+              Navigator.of(context).pushNamed(
+                SignupAuthScreen.routeName,
+                arguments: viewModel.emailController.text.trim(),
+              );
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: viewModel.isSignupButtonEnabled

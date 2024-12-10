@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sasimee/styles/icons.dart';
@@ -14,6 +15,9 @@ class TextFieldType {
   static final name = TextFieldType("name_hint".tr(), SvgIcons.person);
   static final mobileNumber =
       TextFieldType("mobile_number_hint".tr(), SvgIcons.call);
+  static final authenticationNumber = TextFieldType(
+      "enter_authentication_number".tr().replaceAll('\n', ' '),
+      SvgIcons.person);
 
   //TODO: 이름, 전화번호 등 회원 정보 입력 유형 추가 필요
 
@@ -53,6 +57,8 @@ class _CommonTextFieldState extends State<CommonTextField> {
     final isPasswordField = widget.type == TextFieldType.password ||
         widget.type == TextFieldType.passwordConfirmation;
     final isMobileNumberField = widget.type == TextFieldType.mobileNumber;
+    final isAuthenticationNumberField =
+        widget.type == TextFieldType.authenticationNumber;
 
     final phoneCode = isMobileNumberField
         ? CountryWithPhoneCode(
@@ -79,7 +85,9 @@ class _CommonTextFieldState extends State<CommonTextField> {
         },
         child: TextField(
           controller: widget.textEditingController,
-          maxLength: isMobileNumberField ? 13 : widget.maxLength,
+          maxLength: isMobileNumberField
+              ? 13
+              : (isAuthenticationNumberField ? 6 : widget.maxLength),
           inputFormatters: isMobileNumberField
               ? [
                   LibPhonenumberTextFormatter(
@@ -90,7 +98,20 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     additionalDigits: 3,
                   ),
                 ]
+              : (isAuthenticationNumberField
+                  ? [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(6),
+                    ]
+                  : null),
+          style: isAuthenticationNumberField
+              ? const TextStyle(
+                  fontSize: 14,
+                  letterSpacing: 6,
+                )
               : null,
+          keyboardType:
+              isAuthenticationNumberField ? TextInputType.number : null,
           cursorColor: Colors.black54,
           obscureText: isPasswordField ? _obscureText : false,
           decoration: InputDecoration(
@@ -101,11 +122,12 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 : ColorStyles.textFieldBackground,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: widget.type.prefixIcon,
-            ),
-            suffix: widget.suffix,
+            prefixIcon: isAuthenticationNumberField
+                ? null
+                : Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: widget.type.prefixIcon,
+                  ),
             suffixIcon: isPasswordField
                 ? IconButton(
                     icon: Icon(
@@ -118,11 +140,12 @@ class _CommonTextFieldState extends State<CommonTextField> {
                       });
                     },
                   )
-                : null,
+                : widget.suffix,
             hintText: widget.type.hintText,
             hintStyle: const TextStyle(
                 color: ColorStyles.hintText,
                 fontSize: 14,
+                letterSpacing: 1,
                 fontWeight: FontWeight.w400),
             focusColor: ColorStyles.translucenceBlue,
             focusedBorder: const OutlineInputBorder(

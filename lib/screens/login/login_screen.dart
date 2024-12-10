@@ -27,18 +27,17 @@ class LoginScreen extends StatelessWidget {
             height: mediaQuery.size.height -
                 mediaQuery.padding.top -
                 mediaQuery.padding.bottom,
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: const EdgeInsets.only(
+                left: 32, top: 107, right: 32, bottom: 57),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 107),
                 _appDescriptionLayout(),
                 const SizedBox(height: 70),
                 _contentInputLayout(loginViewModel),
                 const Spacer(),
                 _bottomLoginAndSignupLayout(loginViewModel, context),
-                const SizedBox(height: 57),
               ],
             ),
           ),
