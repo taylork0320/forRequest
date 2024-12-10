@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/screens/signup/signup_tag_viewmodel.dart';
 
 import '../../../enums/age_group.dart';
 import '../../../widgets/selectable_tag_list.dart';
-import '../signup_viewmodel.dart';
 
-class SignupTagView extends StatelessWidget {
+class SignupAgeTagView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<SignupViewModel>(context);
+    final viewModel = Provider.of<SignupTagViewModel>(context);
     final ageGroups = AgeGroup.values.map((age) => age.label).toList();
 
     return Column(

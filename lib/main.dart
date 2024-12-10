@@ -43,6 +43,8 @@ class SasimeeApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final colorScheme = ColorScheme.fromSeed(seedColor: Colors.white);
+
     return MaterialApp(
       title: 'app_name'.tr(),
       theme: ThemeData(
@@ -52,16 +54,24 @@ class SasimeeApp extends StatelessWidget {
         primaryColor: ColorStyles.primaryBlue,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 18.0),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16))),
-            foregroundColor: Colors.white,
-            backgroundColor: ColorStyles.primaryBlue,
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500
-            )
+              padding: const EdgeInsets.symmetric(vertical: 18.0),
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16))),
+              foregroundColor: Colors.white,
+              backgroundColor: ColorStyles.primaryBlue,
+              textStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+        ),
+        appBarTheme: AppBarTheme.of(context).copyWith(
+          backgroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: colorScheme.onSurface,
           ),
+          centerTitle: true,
+          elevation: 0,
+          scrolledUnderElevation: 0,
         ),
       ),
       initialRoute: LoginScreen.routeName,

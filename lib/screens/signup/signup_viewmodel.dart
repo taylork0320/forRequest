@@ -1,56 +1,111 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../utils/constants.dart';
+import '../../utils/validator.dart';
 
-class SignupViewModel extends ChangeNotifier {
-  int _currentStep = 0; // 현재 회원가입 단계
-  get currentStep => _currentStep;
+class SignupViewModel with ChangeNotifier {
+  final TextEditingController _emailController = TextEditingController();
 
-  List<String> _selectedAgeGroups = [];
-  get selectedAgeGroups => _selectedAgeGroups;
+  get emailController => _emailController;
 
-  bool _isNextButtonEnabled = false;
-  get isNextButtonEnabled => _isNextButtonEnabled;
+  final TextEditingController _password1Controller = TextEditingController();
 
-  void setCurrentStep(int step) {
-    _currentStep = step;
+  get password1Controller => _password1Controller;
+
+  final TextEditingController _password2Controller = TextEditingController();
+
+  get password2Controller => _password2Controller;
+
+  final TextEditingController _nameController = TextEditingController();
+
+  get nameController => _nameController;
+
+  final TextEditingController _mobileNumberController = TextEditingController();
+
+  get mobileNumberController => _mobileNumberController;
+
+  final FocusNode _emailFocusNode = FocusNode();
+
+  get emailFocusNode => _emailFocusNode;
+
+  final FocusNode _password1FocusNode = FocusNode();
+
+  get password1FocusNode => _password1FocusNode;
+
+  final FocusNode _password2FocusNode = FocusNode();
+
+  get password2FocusNode => _password2FocusNode;
+
+  final FocusNode _nameFocusNode = FocusNode();
+
+  get nameFocusNode => _nameFocusNode;
+
+  final FocusNode _mobileNumberFocusNode = FocusNode();
+
+  get mobileNumberFocusNode => _mobileNumberFocusNode;
+
+  String _passwordErrorMessage = '';
+
+  String get passwordErrorMessage => _passwordErrorMessage;
+
+  bool _isSignupButtonEnabled = false;
+
+  bool get isSignupButtonEnabled => _isSignupButtonEnabled;
+
+  SignupViewModel() {
+    _emailController.addListener(_validateInputs);
+    _password1Controller.addListener(_validateInputs);
+    _password2Controller.addListener(_validateInputs);
+    _nameController.addListener(_validateInputs);
+    _mobileNumberController.addListener(_validateInputs);
+
+    _password2Controller.addListener(() {
+      _passwordErrorMessage = '';
+    });
+  }
+
+  void _validateInputs() {
+    final email = _emailController.text.trim();
+    final password1 = _password1Controller.text.trim();
+    final password2 = _password2Controller.text.trim();
+    final name = _nameController.text.trim();
+    final mobileNumber = _mobileNumberController.text.trim();
+
+    _isSignupButtonEnabled = isValidEmail(email) &&
+        isValidPassword(password1) &&
+        isValidPassword(password2) &&
+        name.isNotEmpty &&
+        mobileNumber.replaceAll('-', '').length == 11 &&
+        mobileNumber.startsWith('010');
+
     notifyListeners();
   }
 
-  void setSelectedAgeGroups(List<String> ageGroups) {
-    print('ageGroups: $ageGroups');
-    _selectedAgeGroups = ageGroups;
-    _isNextButtonEnabled = ageGroups.isNotEmpty;
-    notifyListeners();
-    print('_selectedAgeGroups: $_selectedAgeGroups');
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _password1Controller.dispose();
+    _password2Controller.dispose();
+
+    _emailFocusNode.dispose();
+    _password1FocusNode.dispose();
+    _password2FocusNode.dispose();
   }
 
-  void goToNextStep() {
-    if (_currentStep < MAX_SIGNUP_STEP - 1) {
-      // TODO: 다음 화면으로 이동
-      _currentStep++;
-      _isNextButtonEnabled = false;
-      notifyListeners();
-    }
-  }
+  Future<bool> signUp() async {
+    final email = _emailController.text.trim();
+    final password1 = _password1Controller.text.trim();
+    final password2 = _password2Controller.text.trim();
+    final name = _nameController.text.trim();
+    final mobileNumber = _mobileNumberController.text.trim();
 
-  void goToPreviousStep() {
-    if (_currentStep > 0) {
-      print('_selectedAgeGroups: $_selectedAgeGroups');
-      _currentStep--;
-      // 이전 단계의 버튼 활성화 조건 체크
-      switch (_currentStep) {
-        case 0: // 연령대 선택 화면
-          _isNextButtonEnabled = _selectedAgeGroups.isNotEmpty;
-          break;
-      //TODO 다른 회원가입 단계들의 버튼 활성화 조건도 추가
-      // case 1:
-      //   _isNextButtonEnabled = 해당 단계의 조건;
-      //   break;
-        default:
-          _isNextButtonEnabled = false;
-      }
+    if (password1 != password2) {
+      _passwordErrorMessage = 'not_equal_password'.tr();
       notifyListeners();
+      return false;
     }
+
+    return true;
   }
 }

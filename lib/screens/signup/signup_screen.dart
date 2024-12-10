@@ -2,102 +2,163 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sasimee/screens/signup/signup_viewmodel.dart';
-import 'package:sasimee/screens/signup/views/signup_tag_view.dart';
-import 'package:sasimee/utils/constants.dart';
+import 'package:sasimee/styles/color_styles.dart';
+import 'package:sasimee/widgets/common_text_field.dart';
 
-import '../../styles/color_styles.dart';
-
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
-
+class SignupScreen extends StatefulWidget {
   static String routeName = "/signup";
 
+  const SignupScreen({super.key});
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+
     return ChangeNotifierProvider(
       create: (_) => SignupViewModel(),
-      child: Consumer<SignupViewModel>(
-        builder: (context, viewModel, child) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  if (viewModel.currentStep > 0) {
-                    viewModel.goToPreviousStep();
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-            ),
-            body: SafeArea(
-              child: Padding(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text('register'.tr()),
+        ),
+        body: Builder(builder: (context) {
+          final viewModel = Provider.of<SignupViewModel>(context);
+
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                height: mediaQuery.size.height -
+                    mediaQuery.padding.top -
+                    mediaQuery.padding.bottom -
+                    kToolbarHeight,
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        LinearProgressIndicator(
-                          value: (viewModel.currentStep + 1) / MAX_SIGNUP_STEP,
-                          backgroundColor: ColorStyles.progressBarBackground,
-                          color: Colors.black,
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CommonTextField(
+                              textEditingController: viewModel.emailController,
+                              type: TextFieldType.email,
+                              focusNode: viewModel.emailFocusNode,
+                            ),
+                            const SizedBox(height: 20),
+                            CommonTextField(
+                              textEditingController:
+                                  viewModel.password1Controller,
+                              type: TextFieldType.password,
+                              focusNode: viewModel.password1FocusNode,
+                            ),
+                            const SizedBox(height: 20),
+                            Consumer<SignupViewModel>(
+                                builder: (context, viewModel, _) {
+                              return CommonTextField(
+                                textEditingController:
+                                    viewModel.password2Controller,
+                                type: TextFieldType.passwordConfirmation,
+                                focusNode: viewModel.password2FocusNode,
+                                error: viewModel.passwordErrorMessage,
+                              );
+                            }),
+                            const SizedBox(height: 26),
+                            CommonTextField(
+                              textEditingController: viewModel.nameController,
+                              type: TextFieldType.name,
+                              focusNode: viewModel.nameFocusNode,
+                            ),
+                            const SizedBox(height: 20),
+                            CommonTextField(
+                              textEditingController:
+                                  viewModel.mobileNumberController,
+                              type: TextFieldType.mobileNumber,
+                              focusNode: viewModel.mobileNumberFocusNode,
+                            ),
+                            const SizedBox(height: 10),
+                          ],
                         ),
-                        const SizedBox(height: 40),
-                        _getStepContent(viewModel),
-                      ],
+                      ),
                     ),
-                    _bottomButtonLayout(context, viewModel),
+                    _bottomLoginAndSignupLayout(),
+                    const SizedBox(height: 57),
                   ],
                 ),
               ),
             ),
           );
-        },
+        }),
       ),
     );
   }
 
-  Widget _getStepContent(SignupViewModel viewModel) {
-    switch (viewModel.currentStep) {
-      case 0:
-        return SignupTagView(); // 연령대 태그 선택
-    //TODO: 회원가입 다른 단계들도 여기에 추가
-      default:
-        return const SizedBox.shrink();
-    }
+  Widget _bottomLoginAndSignupLayout() {
+    return Consumer<SignupViewModel>(builder: (context, viewModel, _) {
+      return Column(
+        children: [
+          _signupButton(viewModel, context),
+          const SizedBox(height: 30),
+          _loginButton(context)
+        ],
+      );
+    });
   }
 
-  Widget _bottomButtonLayout(BuildContext context, SignupViewModel viewModel) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _signupButton(SignupViewModel viewModel, BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+          onPressed: () async {
+            if (!viewModel.isSignupButtonEnabled) return;
+
+            final result = await viewModel.signUp();
+            if (result) {}
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: viewModel.isSignupButtonEnabled
+                ? ColorStyles.primaryBlue
+                : ColorStyles.dividerBackground,
+          ),
+          child: Text('signup'.tr())),
+    );
+  }
+
+  Widget _loginButton(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'signup_tag_guide'.tr(),
+          'already_have_member'.tr(),
           style: const TextStyle(
-            color: ColorStyles.guideText,
+            color: Colors.black,
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         ),
-        const SizedBox(height: 18),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: viewModel.isNextButtonEnabled
-                ? () {
-              viewModel.goToNextStep();
-            }
-                : null,
-            child: Text('next'.tr()),
+        TextButton(
+          onPressed: () {
+            // 로그인 화면으로 이동
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            'login'.tr(),
+            style: const TextStyle(
+              color: ColorStyles.primaryBlue,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              decoration: TextDecoration.underline,
+              decorationColor: ColorStyles.primaryBlue,
+            ),
           ),
         ),
-        const SizedBox(height: 60),
       ],
     );
   }

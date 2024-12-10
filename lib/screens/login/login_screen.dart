@@ -32,17 +32,13 @@ class LoginScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Flexible(flex: 3, child: _appDescriptionLayout()),
-                const SizedBox(
-                  height: 10,
-                ),
-                Flexible(flex: 3, child: _contentInputLayout(loginViewModel)),
-                Flexible(
-                    flex: 2,
-                    child: _bottomLoginAndSignupLayout(loginViewModel, context))
+                const SizedBox(height: 107),
+                _appDescriptionLayout(),
+                const SizedBox(height: 70),
+                _contentInputLayout(loginViewModel),
+                const Spacer(),
+                _bottomLoginAndSignupLayout(loginViewModel, context),
+                const SizedBox(height: 57),
               ],
             ),
           ),
