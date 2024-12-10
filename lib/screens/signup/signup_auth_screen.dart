@@ -130,7 +130,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
         children: [
           _doneButton(viewModel, context),
           const SizedBox(height: 30),
-          Visibility.maintain(child: _placeholder(context))
+          Visibility.maintain(child: _placeholder())
         ],
       );
     });
@@ -158,7 +158,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
   }
 
   /// 회원 가입 화면과 버튼의 위치를 일치시키기 위한 Placeholder 위젯을 리턴합니다.
-  Widget _placeholder(BuildContext context) {
+  Widget _placeholder() {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

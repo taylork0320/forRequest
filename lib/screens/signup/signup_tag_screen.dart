@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/screens/signup/signup_complete_screen.dart';
 import 'package:sasimee/screens/signup/signup_tag_viewmodel.dart';
 import 'package:sasimee/screens/signup/views/signup_age_tag.dart';
 import 'package:sasimee/screens/signup/views/signup_area_tag.dart';
@@ -99,6 +100,8 @@ class SignupTagScreen extends StatelessWidget {
               onPressed: viewModel.isNextButtonEnabled
                   ? () {
                       if (isLast) {
+                        Navigator.of(context)
+                            .pushNamed(SignupCompleteScreen.routeName);
                       } else {
                         viewModel.goToNextStep();
                       }
