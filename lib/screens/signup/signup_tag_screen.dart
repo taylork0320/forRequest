@@ -2,75 +2,80 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sasimee/screens/signup/signup_tag_viewmodel.dart';
-import 'package:sasimee/screens/signup/views/signup_tag_view.dart';
+import 'package:sasimee/screens/signup/views/signup_age_tag.dart';
+import 'package:sasimee/screens/signup/views/signup_area_tag.dart';
+import 'package:sasimee/screens/signup/views/signup_gender_tag.dart';
+import 'package:sasimee/screens/signup/views/signup_subject_tag.dart';
+import 'package:sasimee/screens/signup/views/signup_type_tag.dart';
+import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/utils/constants.dart';
 
-import '../../styles/color_styles.dart';
-
 class SignupTagScreen extends StatelessWidget {
+  static String routeName = "/signup_tag";
+
   const SignupTagScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => SignupTagViewModel(),
-      child: Consumer<SignupTagViewModel>(
-        builder: (context, viewModel, child) {
-          return Scaffold(
+      child: Builder(builder: (context) {
+        final viewModel = Provider.of<SignupTagViewModel>(context);
+
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) {
+            if (didPop) return;
+
+            if (viewModel.currentStep == 0) {
+              if (Navigator.canPop(context)) Navigator.of(context).pop();
+            } else {
+              viewModel.goToPreviousStep();
+            }
+          },
+          child: Scaffold(
             backgroundColor: Colors.white,
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  if (viewModel.currentStep > 0) {
-                    viewModel.goToPreviousStep();
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-            ),
+            appBar: AppBar(),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.only(left: 32, top: 20, right: 32),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        LinearProgressIndicator(
-                          value: (viewModel.currentStep + 1) / MAX_SIGNUP_STEP,
-                          backgroundColor: ColorStyles.progressBarBackground,
-                          color: Colors.black,
-                        ),
-                        const SizedBox(height: 40),
-                        _getStepContent(viewModel),
-                      ],
+                    LinearProgressIndicator(
+                      value: (viewModel.currentStep + 1) / MAX_SIGNUP_STEP,
+                      backgroundColor: ColorStyles.progressBarBackground,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(height: 40),
+                    Expanded(
+                      child: Consumer<SignupTagViewModel>(
+                          builder: (context, viewModel, _) {
+                        return IndexedStack(
+                          index: viewModel.currentStep,
+                          children: const [
+                            SignupAgeTag(),
+                            SignupAreaTag(),
+                            SignupGenderTag(),
+                            SignupTypeTag(),
+                            SignupSubjectTag(),
+                          ],
+                        );
+                      }),
                     ),
                     _bottomButtonLayout(context, viewModel),
                   ],
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }),
     );
   }
 
-  Widget _getStepContent(SignupTagViewModel viewModel) {
-    switch (viewModel.currentStep) {
-      case 0:
-        return SignupAgeTagView(); // 연령대 태그 선택
-      //TODO: 회원가입 다른 단계들도 여기에 추가
-      default:
-        return const SizedBox.shrink();
-    }
-  }
-
+  /// 다음 및 선택완료 버튼 레이아웃을 리턴합니다.
   Widget _bottomButtonLayout(
       BuildContext context, SignupTagViewModel viewModel) {
     return Column(
@@ -85,17 +90,24 @@ class SignupTagScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 18),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: viewModel.isNextButtonEnabled
-                ? () {
-                    viewModel.goToNextStep();
-                  }
-                : null,
-            child: Text('next'.tr()),
-          ),
-        ),
+        Consumer<SignupTagViewModel>(builder: (context, viewModel, _) {
+          bool isLast = viewModel.currentStep == (MAX_SIGNUP_STEP - 1);
+
+          return SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: viewModel.isNextButtonEnabled
+                  ? () {
+                      if (isLast) {
+                      } else {
+                        viewModel.goToNextStep();
+                      }
+                    }
+                  : null,
+              child: Text(isLast ? 'selection_complete'.tr() : 'next'.tr()),
+            ),
+          );
+        }),
         const SizedBox(height: 60),
       ],
     );

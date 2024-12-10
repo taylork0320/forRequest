@@ -46,6 +46,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  /// 로고 및 로그인 안내 레이아웃을 리턴합니다.
   Widget _appDescriptionLayout() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -75,6 +76,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  /// 로그인 및 비밀번호 필드를 가진 레이아웃을 리턴합니다.
   Widget _contentInputLayout(LoginViewModel viewModel) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -115,6 +117,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  /// 로그인 및 회원가입 버튼 레이아웃을 리턴합니다.
   Widget _bottomLoginAndSignupLayout(
       LoginViewModel viewModel, BuildContext context) {
     return Column(
@@ -128,6 +131,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  /// 로그인 위젯을 리턴합니다.
   Widget _loginButton(LoginViewModel viewModel, BuildContext context) {
     return SizedBox(
       width: double.infinity,
@@ -147,6 +151,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  /// 회원 가입 텍스트 및 버튼 위젯을 리턴합니다.
   Widget _signupButton(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sasimee/screens/signup/signup_auth_viewmodel.dart';
+import 'package:sasimee/screens/signup/signup_tag_screen.dart';
 import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/widgets/common_text_field.dart';
 import 'package:sprintf/sprintf.dart';
@@ -122,6 +123,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
     );
   }
 
+  /// 인증번호 재요청 또는 입력 완료 버튼 레이아웃을 리턴합니다.
   Widget _bottomLoginAndSignupLayout() {
     return Consumer<SignupAuthViewModel>(builder: (context, viewModel, _) {
       return Column(
@@ -134,12 +136,14 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
     });
   }
 
+  /// 인증번호 재요청 또는 입력 완료 버튼 위젯을 리턴합니다.
   Widget _doneButton(SignupAuthViewModel viewModel, BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
           onPressed: () async {
             if (viewModel.isButtonEnabled) {
+              Navigator.of(context).pushNamed(SignupTagScreen.routeName);
             } else {
               viewModel.requestOtp();
             }
@@ -153,6 +157,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
     );
   }
 
+  /// 회원 가입 화면과 버튼의 위치를 일치시키기 위한 Placeholder 위젯을 리턴합니다.
   Widget _placeholder(BuildContext context) {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.center,

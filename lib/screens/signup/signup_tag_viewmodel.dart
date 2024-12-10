@@ -7,9 +7,27 @@ class SignupTagViewModel extends ChangeNotifier {
   get currentStep => _currentStep;
 
   List<String> _selectedAgeGroups = [];
+
   get selectedAgeGroups => _selectedAgeGroups;
 
+  List<String> _selectedAreaGroups = [];
+
+  get selectedAreaGroups => _selectedAreaGroups;
+
+  List<String> _selectedGenderGroups = [];
+
+  get selectedGenderGroups => _selectedGenderGroups;
+
+  List<String> _selectedTypeGroups = [];
+
+  get selectedTypeGroups => _selectedTypeGroups;
+
+  List<String> _selectedSubjectGroups = [];
+
+  get selectedSubjectGroups => _selectedSubjectGroups;
+
   bool _isNextButtonEnabled = false;
+
   get isNextButtonEnabled => _isNextButtonEnabled;
 
   void setCurrentStep(int step) {
@@ -17,12 +35,34 @@ class SignupTagViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedAgeGroups(List<String> ageGroups) {
-    print('ageGroups: $ageGroups');
-    _selectedAgeGroups = ageGroups;
-    _isNextButtonEnabled = ageGroups.isNotEmpty;
+  void setSelectedAgeGroups(List<String> groups) {
+    _selectedAgeGroups = groups;
+    _isNextButtonEnabled = groups.isNotEmpty;
     notifyListeners();
-    print('_selectedAgeGroups: $_selectedAgeGroups');
+  }
+
+  void setSelectedAreaGroups(List<String> groups) {
+    _selectedAreaGroups = groups;
+    _isNextButtonEnabled = groups.isNotEmpty;
+    notifyListeners();
+  }
+
+  void setSelectedGenderGroups(List<String> groups) {
+    _selectedGenderGroups = groups;
+    _isNextButtonEnabled = groups.isNotEmpty;
+    notifyListeners();
+  }
+
+  void setSelectedTypeGroups(List<String> groups) {
+    _selectedTypeGroups = groups;
+    _isNextButtonEnabled = groups.isNotEmpty;
+    notifyListeners();
+  }
+
+  void setSelectedSubjectGroups(List<String> groups) {
+    _selectedSubjectGroups = groups;
+    _isNextButtonEnabled = groups.isNotEmpty;
+    notifyListeners();
   }
 
   void goToNextStep() {
@@ -43,10 +83,18 @@ class SignupTagViewModel extends ChangeNotifier {
         case 0: // 연령대 선택 화면
           _isNextButtonEnabled = _selectedAgeGroups.isNotEmpty;
           break;
-      //TODO 다른 회원가입 단계들의 버튼 활성화 조건도 추가
-      // case 1:
-      //   _isNextButtonEnabled = 해당 단계의 조건;
-      //   break;
+        case 1:
+          _isNextButtonEnabled = _selectedAreaGroups.isNotEmpty;
+          break;
+        case 2:
+          _isNextButtonEnabled = _selectedGenderGroups.isNotEmpty;
+          break;
+        case 3:
+          _isNextButtonEnabled = _selectedTypeGroups.isNotEmpty;
+          break;
+        case 4:
+          _isNextButtonEnabled = _selectedSubjectGroups.isNotEmpty;
+          break;
         default:
           _isNextButtonEnabled = false;
       }

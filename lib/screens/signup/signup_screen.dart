@@ -100,6 +100,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// 회원 가입 버튼 및 로그인 버튼 레이아웃을 리턴합니다.
   Widget _bottomLoginAndSignupLayout() {
     return Consumer<SignupViewModel>(builder: (context, viewModel, _) {
       return Column(
@@ -112,6 +113,7 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
+  /// 회원 가입 버튼 위젯을 리턴합니다.
   Widget _signupButton(SignupViewModel viewModel, BuildContext context) {
     return SizedBox(
       width: double.infinity,
@@ -138,6 +140,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// 로그인 안내 텍스트 및 버튼 위젯을 리턴합니다.
   Widget _loginButton(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
