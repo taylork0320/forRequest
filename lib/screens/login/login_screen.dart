@@ -11,37 +11,38 @@ import '../../widgets/common_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
   static String routeName = "/login";
-  
+
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            height: mediaQuery.size.height -
+                mediaQuery.padding.top -
+                mediaQuery.padding.bottom,
+            padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 30,),
-                Flexible(
-                    flex: 3,
-                    child: _appDescriptionLayout()
+                const SizedBox(
+                  height: 30,
                 ),
-                const SizedBox(height: 10,),
-                Flexible(
-                  flex: 3,
-                    child: _contentInputLayout(loginViewModel)
+                Flexible(flex: 3, child: _appDescriptionLayout()),
+                const SizedBox(
+                  height: 10,
                 ),
+                Flexible(flex: 3, child: _contentInputLayout(loginViewModel)),
                 Flexible(
-                  flex: 2,
-                    child: _bottomLoginAndSignupLayout(loginViewModel, context)
-                )
+                    flex: 2,
+                    child: _bottomLoginAndSignupLayout(loginViewModel, context))
               ],
             ),
           ),
@@ -58,19 +59,21 @@ class LoginScreen extends StatelessWidget {
           width: 80,
           child: PngImages.logo,
         ),
-        const SizedBox(height: 18,),
+        const SizedBox(
+          height: 18,
+        ),
         SizedBox(
           width: 126,
           height: 38,
           child: SvgIcons.textLogo,
         ),
-        const SizedBox(height: 15,),
-        Text('login_app_description'.tr(),
+        const SizedBox(
+          height: 15,
+        ),
+        Text(
+          'login_app_description'.tr(),
           style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.black
-          ),
+              fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
           textAlign: TextAlign.center,
         ),
       ],
@@ -83,23 +86,28 @@ class LoginScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         CommonTextField(
-            textEditingController: viewModel.emailController,
-            type: TextFieldType.email,
-            focusNode: viewModel.emailFocusNode,
+          textEditingController: viewModel.emailController,
+          type: TextFieldType.email,
+          focusNode: viewModel.emailFocusNode,
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         CommonTextField(
           textEditingController: viewModel.passwordController,
           type: TextFieldType.password,
           focusNode: viewModel.passwordFocusNode,
         ),
-        const SizedBox(height: 6,),
+        const SizedBox(
+          height: 6,
+        ),
         TextButton(
           onPressed: () {
             //TODO: 비밀번호 찾기 페이지로 이동
             print("비밀번호 찾기 버튼 클릭");
           },
-          child: Text('forget_password'.tr(),
+          child: Text(
+            'forget_password'.tr(),
             style: const TextStyle(
               color: ColorStyles.hintText,
               fontSize: 14,
@@ -112,11 +120,14 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomLoginAndSignupLayout(LoginViewModel viewModel, BuildContext context) {
+  Widget _bottomLoginAndSignupLayout(
+      LoginViewModel viewModel, BuildContext context) {
     return Column(
       children: [
         _loginButton(viewModel, context),
-        const SizedBox(height: 30,),
+        const SizedBox(
+          height: 30,
+        ),
         _signupButton(context)
       ],
     );
@@ -126,9 +137,10 @@ class LoginScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-          onPressed: (){
+          onPressed: () {
             viewModel.isLoginButtonEnabled
-                ? Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (route) => false)
+                ? Navigator.pushNamedAndRemoveUntil(
+                    context, MainScreen.routeName, (route) => false)
                 : null;
           },
           style: ElevatedButton.styleFrom(
@@ -136,8 +148,7 @@ class LoginScreen extends StatelessWidget {
                 ? ColorStyles.primaryBlue
                 : ColorStyles.dividerBackground,
           ),
-          child: Text('login'.tr())
-      ),
+          child: Text('login'.tr())),
     );
   }
 
@@ -145,7 +156,8 @@ class LoginScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('not_yet_member'.tr(),
+        Text(
+          'not_yet_member'.tr(),
           style: const TextStyle(
             color: Colors.black,
             fontSize: 14,
@@ -157,7 +169,8 @@ class LoginScreen extends StatelessWidget {
             // 회원가입 화면으로 이동
             Navigator.of(context).pushNamed(SignupScreen.routeName);
           },
-          child: Text('signup'.tr(),
+          child: Text(
+            'signup'.tr(),
             style: const TextStyle(
               color: ColorStyles.primaryBlue,
               fontSize: 14,
