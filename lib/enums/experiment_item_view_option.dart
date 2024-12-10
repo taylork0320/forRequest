@@ -1,0 +1,1 @@
+enum ExperimentItemViewOption { DEFAULT, FULL }

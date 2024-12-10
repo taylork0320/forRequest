@@ -1,0 +1,33 @@
+{
+  "app_name": "Sasimee",
+
+  "login_app_description": "누구나 쉽게 사회·심리 실험을 주도하고\n나에게 맞는 실험을 찾아볼 수 있는 서비스",
+  "email_hint": "이메일을 입력해 주세요",
+  "password_hint": "비밀번호를 입력해 주세요",
+  "forget_password": "비밀번호를 잊으셨나요?",
+  "login": "로그인",
+  "not_yet_member": "아직 회원이 아니신가요?",
+  "signup": "회원가입",
+  "signup_age_title": "연령대를\n선택해 주세요.",
+  "signup_tag_guide": "선택하신 키워드는 언제든 바꿀 수 있습니다.",
+  "next": "다음",
+
+  "full_view": "전체 보기",
+  "create_experiment": "사회·심리 실험 올리기",
+
+  "survey_recommend_title": "추천하는 설문형 사회·심리 실험",
+  "survey_description": "손쉬운 참여와\n스마트한 설문지 생성",
+  "survey_create": "설문형 생성",
+  "survey_screen_recommend_title": "많은 사람들이 찾은\n설문형 실험",
+
+  "perform_recommend_title": "추천하는 수행형 사회·심리 실험",
+  "perform_description": "신뢰를 바탕으로\n의미 있는 결과 도출",
+  "perform_create": "수행형 생성",
+  "perform_screen_recommend_title": "많은 사람들이 찾은\n수행형 실험",
+
+  "recommend_description": "사용자들에게 인기 있는 실험이에요.",
+  "recommend_more": "인기 실험 더보기",
+  "recommend_close": "접기",
+  "item_count": "{itemCount}건",
+  "price": "{price}원"
+}
