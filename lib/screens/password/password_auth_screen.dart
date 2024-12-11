@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/screens/login/login_screen.dart';
 import 'package:sasimee/screens/password/password_auth_viewmodel.dart';
-import 'package:sasimee/screens/signup/signup_tag_screen.dart';
+import 'package:sasimee/screens/password/password_reset_screen.dart';
 import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/widgets/common_text_field.dart';
 import 'package:sprintf/sprintf.dart';
@@ -143,7 +144,14 @@ class _PasswordAuthScreenState extends State<PasswordAuthScreen> {
       child: ElevatedButton(
           onPressed: () async {
             if (viewModel.isButtonEnabled) {
-              Navigator.of(context).pushNamed(SignupTagScreen.routeName);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  PasswordResetScreen.routeName, (route) {
+                if (route.settings.name == LoginScreen.routeName) {
+                  return true;
+                }
+
+                return false;
+              });
             } else {
               viewModel.requestOtp();
             }

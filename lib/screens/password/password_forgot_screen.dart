@@ -7,7 +7,7 @@ import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/widgets/common_text_field.dart';
 
 class PasswordForgotScreen extends StatefulWidget {
-  static String routeName = "/password_reset";
+  static String routeName = "/password_forgot";
 
   const PasswordForgotScreen({super.key});
 
@@ -108,7 +108,8 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
 
             if (await viewModel.requestOtp()) {
               if (!context.mounted) return;
-              Navigator.of(context).pushNamed(PasswordAuthScreen.routeName);
+              Navigator.of(context).pushNamed(PasswordAuthScreen.routeName,
+                  arguments: viewModel.emailController.text.trim());
             }
           },
           style: ElevatedButton.styleFrom(

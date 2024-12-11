@@ -45,6 +45,7 @@ class PasswordForgotViewModel with ChangeNotifier {
 
     // if (입력된 email 로 가입된 계정이 없다면) {
     //   _errorMessage = 'invalid_account'.tr();
+    //   notifyListeners();
     //   return false;
     // }
 
