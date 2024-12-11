@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/screens/password/password_reset_complete_screen.dart';
 import 'package:sasimee/screens/password/password_reset_viewmodel.dart';
 import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/widgets/common_text_field.dart';
@@ -125,7 +126,8 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
 
             if (await viewModel.done()) {
               if (!context.mounted) return;
-              // Navigator.of(context).replace(PasswordAuthScreen.routeName);
+              Navigator.of(context)
+                  .pushNamed(PasswordResetCompleteScreen.routeName);
             }
           },
           style: ElevatedButton.styleFrom(
