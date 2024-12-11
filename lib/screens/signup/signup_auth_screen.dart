@@ -112,7 +112,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
                         ],
                       ),
                     ),
-                    _bottomLoginAndSignupLayout(),
+                    _bottomDoneLayout(),
                   ],
                 ),
               ),
@@ -124,7 +124,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
   }
 
   /// 인증번호 재요청 또는 입력 완료 버튼 레이아웃을 리턴합니다.
-  Widget _bottomLoginAndSignupLayout() {
+  Widget _bottomDoneLayout() {
     return Consumer<SignupAuthViewModel>(builder: (context, viewModel, _) {
       return Column(
         children: [
@@ -153,7 +153,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
           ),
           child: Text(viewModel.isButtonEnabled
               ? 'enter_complete'.tr()
-              : 'request_authentication_number'.tr())),
+              : 're_request_authentication_number'.tr())),
     );
   }
 

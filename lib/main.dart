@@ -5,6 +5,7 @@ import 'package:sasimee/screens/login/login_screen.dart';
 import 'package:sasimee/screens/login/login_viewmodel.dart';
 import 'package:sasimee/screens/main/experiment/experiment_screen.dart';
 import 'package:sasimee/screens/main/main_screen.dart';
+import 'package:sasimee/screens/password/password_forgot_screen.dart';
 import 'package:sasimee/screens/signup/signup_auth_screen.dart';
 import 'package:sasimee/screens/signup/signup_complete_screen.dart';
 import 'package:sasimee/screens/signup/signup_screen.dart';
@@ -32,6 +33,7 @@ void main() async {
 /// 라우팅 설정 (pushNamed를 통해 쉽게 화면 라우팅을 할 수 있다)
 final route = {
   LoginScreen.routeName: (context) => const LoginScreen(),
+  PasswordForgotScreen.routeName: (context) => const PasswordForgotScreen(),
   SignupScreen.routeName: (context) => const SignupScreen(),
   SignupAuthScreen.routeName: (context) {
     String email = ModalRoute.of(context)!.settings.arguments as String;

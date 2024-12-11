@@ -16,7 +16,8 @@
   "already_have_member": "이미 계정이 있으신가요?",
   "enter_authentication_number": "인증번호를\n입력해 주세요.",
   "sent_authentication_number": "{email} 으로\n인증번호를 전송했습니다.",
-  "request_authentication_number": "인증번호 재요청",
+  "re_request_authentication_number": "인증번호 재요청",
+  "request_authentication_number": "인증번호 요청",
   "enter_complete": "입력 완료",
   "signup_age_title": "연령대를\n선택해 주세요.",
   "signup_area_title": "참여 희망 지역을\n선택해 주세요.",
@@ -29,6 +30,11 @@
   "go_home": "홈으로 이동",
   "welcome": "환영합니다!",
   "welcome_description": "사심이와 함께 다양하고 즐거운\n사회•심리 실험에 참여해보세요.",
+
+  "find_password": "비밀번호 찾기",
+  "trouble_log_in": "로그인에\n문제가 있나요?",
+  "find_password_guide": "가입하신 이메일 주소를 입력하시면\n인증번호를 보내드립니다.",
+  "invalid_account": "입력하신 정보와 일치하는 계정이 없습니다.",
 
   "full_view": "전체 보기",
   "create_experiment": "사회·심리 실험 올리기",
