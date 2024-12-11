@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/screens/password/password_auth_screen.dart';
 import 'package:sasimee/screens/password/password_forgot_viewmodel.dart';
 import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/widgets/common_text_field.dart';
@@ -106,7 +107,8 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
             if (!viewModel.isButtonEnabled) return;
 
             if (await viewModel.requestOtp()) {
-              //
+              if (!context.mounted) return;
+              Navigator.of(context).pushNamed(PasswordAuthScreen.routeName);
             }
           },
           style: ElevatedButton.styleFrom(
