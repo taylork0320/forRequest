@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sasimee/screens/main/widgets/experiment_graphic_item.dart';
 import 'package:sasimee/screens/main/widgets/perform_item.dart';
 import 'package:sasimee/screens/main/widgets/survey_item.dart';
-import 'package:sasimee/widgets/tag_item.dart';
+import 'package:sasimee/screens/mypage/mypage_main_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../enums/experiment_type.dart';
@@ -98,7 +98,7 @@ class _MainScreenState extends State<MainScreen> {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              //TODO: 마이페이지로 이동
+              Navigator.of(context).pushNamed(MypageMainScreen.routeName);
             },
             child: SizedBox(
               width: 30,

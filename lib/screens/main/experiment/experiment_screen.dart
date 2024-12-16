@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sasimee/screens/main/experiment/perform_experiment_view.dart';
 import 'package:sasimee/screens/main/experiment/survey/survey_viewmodel.dart';
 import 'package:sasimee/screens/main/experiment/survey_experiment_view.dart';
+import 'package:sasimee/screens/mypage/mypage_main_screen.dart';
 import 'package:sasimee/styles/color_styles.dart';
 
 import '../../../enums/experiment_type.dart';
@@ -13,10 +14,7 @@ class ExperimentScreen extends StatelessWidget {
 
   final ExperimentType type;
 
-  const ExperimentScreen({
-    super.key,
-    required this.type
-  });
+  const ExperimentScreen({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class ExperimentScreen extends StatelessWidget {
         length: 2,
         initialIndex: type == ExperimentType.survey ? 0 : 1,
         child: Scaffold(
-          appBar: _appBar(),
+          appBar: _appBar(context),
           body: const TabBarView(
             children: [
               SurveyExperimentView(), // 설문형
@@ -41,11 +39,13 @@ class ExperimentScreen extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _appBar() {
+  PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
-      scrolledUnderElevation: 0, // 스크롤 시 앱바가 어두워지는 현상 제거
+      scrolledUnderElevation: 0,
+      // 스크롤 시 앱바가 어두워지는 현상 제거
       backgroundColor: Colors.white,
-      titleSpacing: 22, // 좌측 여백
+      titleSpacing: 22,
+      // 좌측 여백
       title: Center(
         child: SizedBox(
           width: 28,
@@ -58,7 +58,7 @@ class ExperimentScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              //TODO: 마이페이지로 이동
+              Navigator.of(context).pushNamed(MypageMainScreen.routeName);
             },
             child: SizedBox(
               width: 30,
@@ -80,15 +80,10 @@ class ExperimentScreen extends StatelessWidget {
       indicatorWeight: 3,
       indicatorSize: TabBarIndicatorSize.tab,
       labelColor: ColorStyles.primaryBlue,
-      labelStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600
-      ),
+      labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       unselectedLabelColor: Colors.black,
-      unselectedLabelStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500
-      ),
+      unselectedLabelStyle:
+          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       tabs: [
         Tab(text: '설문형'),
         Tab(text: '수행형'),

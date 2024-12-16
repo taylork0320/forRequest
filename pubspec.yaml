@@ -26,6 +26,7 @@ dependencies:
   flutter_native_splash: ^2.4.3
   flutter_libphonenumber: ^2.5.0
   sprintf: ^7.0.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

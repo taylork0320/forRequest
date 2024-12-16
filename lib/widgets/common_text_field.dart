@@ -12,13 +12,12 @@ class TextFieldType {
   static final email = TextFieldType("email_hint".tr(), SvgIcons.email);
   static final password = TextFieldType("password_hint".tr(), SvgIcons.lock);
   static final passwordConfirmation =
-  TextFieldType("password_confirmation_hint".tr(), SvgIcons.lock);
+      TextFieldType("password_confirmation_hint".tr(), SvgIcons.lock);
   static final name = TextFieldType("name_hint".tr(), SvgIcons.person);
   static final mobileNumber =
-  TextFieldType("mobile_number_hint".tr(), SvgIcons.call);
+      TextFieldType("mobile_number_hint".tr(), SvgIcons.call);
   static final authenticationNumber = TextFieldType(
-      "enter_authentication_number".tr().replaceAll('\n', ' '),
-      null);
+      "enter_authentication_number".tr().replaceAll('\n', ' '), null);
 
   final String hintText;
   final SvgPicture? prefixIcon;
@@ -30,7 +29,9 @@ class CommonTextField extends StatefulWidget {
   final TextEditingController textEditingController;
   final TextFieldType type;
   final FocusNode focusNode;
+  final bool showPrefix;
   final Widget? suffix;
+  final Widget? suffixIcon;
   final String? error;
   final int? maxLength;
 
@@ -39,7 +40,9 @@ class CommonTextField extends StatefulWidget {
     required this.textEditingController,
     required this.type,
     required this.focusNode,
+    this.showPrefix = true,
     this.suffix,
+    this.suffixIcon,
     this.error,
     this.maxLength,
   });
@@ -61,17 +64,17 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
     final phoneCode = isMobileNumberField
         ? CountryWithPhoneCode(
-        phoneCode: '82',
-        countryCode: 'KR',
-        exampleNumberMobileNational: '010-1234-5678',
-        exampleNumberFixedLineNational: '010-1234-5678',
-        phoneMaskMobileNational: '000-0000-0000',
-        phoneMaskFixedLineNational: '000-0000-0000',
-        exampleNumberMobileInternational: '+82 10 1234 5678',
-        exampleNumberFixedLineInternational: '+82 10 1234 5678',
-        phoneMaskMobileInternational: '+00 00 0000 0000',
-        phoneMaskFixedLineInternational: '+00 00 0000 0000',
-        countryName: 'Republic of Korea')
+            phoneCode: '82',
+            countryCode: 'KR',
+            exampleNumberMobileNational: '010-1234-5678',
+            exampleNumberFixedLineNational: '010-1234-5678',
+            phoneMaskMobileNational: '000-0000-0000',
+            phoneMaskFixedLineNational: '000-0000-0000',
+            exampleNumberMobileInternational: '+82 10 1234 5678',
+            exampleNumberFixedLineInternational: '+82 10 1234 5678',
+            phoneMaskMobileInternational: '+00 00 0000 0000',
+            phoneMaskFixedLineInternational: '+00 00 0000 0000',
+            countryName: 'Republic of Korea')
         : null;
 
     return Center(
@@ -89,28 +92,28 @@ class _CommonTextFieldState extends State<CommonTextField> {
               : (isAuthenticationNumberField ? 6 : widget.maxLength),
           inputFormatters: isMobileNumberField
               ? [
-            LibPhonenumberTextFormatter(
-              phoneNumberType: PhoneNumberType.fixedLine,
-              phoneNumberFormat: PhoneNumberFormat.national,
-              country: phoneCode!,
-              inputContainsCountryCode: true,
-              additionalDigits: 3,
-            ),
-          ]
+                  LibPhonenumberTextFormatter(
+                    phoneNumberType: PhoneNumberType.fixedLine,
+                    phoneNumberFormat: PhoneNumberFormat.national,
+                    country: phoneCode!,
+                    inputContainsCountryCode: true,
+                    additionalDigits: 3,
+                  ),
+                ]
               : (isAuthenticationNumberField
-              ? [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(6),
-          ]
-              : null),
+                  ? [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(6),
+                    ]
+                  : null),
           style: isAuthenticationNumberField
               ? const TextStyle(
-            fontSize: 14,
-            letterSpacing: 6,
-          )
+                  fontSize: 14,
+                  letterSpacing: 6,
+                )
               : null,
           keyboardType:
-          isAuthenticationNumberField ? TextInputType.number : null,
+              isAuthenticationNumberField ? TextInputType.number : null,
           cursorColor: Colors.black54,
           obscureText: isPasswordField ? _obscureText : false,
           decoration: InputDecoration(
@@ -120,27 +123,29 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 ? ColorStyles.translucenceBlue
                 : ColorStyles.textFieldBackground,
             contentPadding:
-            const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-            prefixIcon: widget.type.prefixIcon != null
-                ? Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: widget.type.prefixIcon,
-                  )
-                : null,
+                const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+            prefixIcon: !widget.showPrefix
+                ? null
+                : (widget.type.prefixIcon != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: widget.type.prefixIcon,
+                      )
+                    : null),
             suffix: widget.suffix,
             suffixIcon: isPasswordField
                 ? IconButton(
-              icon: Icon(
-                _obscureText ? Icons.visibility_off : Icons.visibility,
-                color: Colors.grey,
-              ),
-              onPressed: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-            )
-                : null,
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  )
+                : widget.suffixIcon,
             hintText: widget.type.hintText,
             hintStyle: const TextStyle(
                 color: ColorStyles.hintText,
