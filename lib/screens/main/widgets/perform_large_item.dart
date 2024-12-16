@@ -4,6 +4,7 @@ import 'package:sasimee/widgets/tag_item.dart';
 
 import '../../../enums/experiment_type.dart';
 import '../../../styles/color_styles.dart';
+import '../experiment/perform/perform_info_screen.dart';
 
 class PerformLargeItem extends StatelessWidget {
   final String title; //TODO: Perform 데이터로 변경
@@ -15,15 +16,23 @@ class PerformLargeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _basicInformationLayout(),
-          const Divider(thickness: 0.5, height: 0.5, color: ColorStyles.dividerBackground,),
-          _bottomAdditionalInformationLayout()
-        ],
+    return GestureDetector(
+      // 실험 정보 화면으로 이동
+      onTap: () { Navigator.pushNamed(
+          context,
+          PerformInfoScreen.routeName,
+          arguments: title
+      );},
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _basicInformationLayout(),
+            const Divider(thickness: 0.5, height: 0.5, color: ColorStyles.dividerBackground,),
+            _bottomAdditionalInformationLayout()
+          ],
+        ),
       ),
     );
   }

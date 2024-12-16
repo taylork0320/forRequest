@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:sasimee/screens/main/experiment/perform/perform_create_screen.dart';
+import 'package:sasimee/screens/main/experiment/survey/survey_create_screen.dart';
 import 'package:sasimee/styles/icons.dart';
 
 import '../../../enums/experiment_type.dart';
@@ -38,7 +40,7 @@ class ExperimentGraphicItem extends StatelessWidget {
           const SizedBox(height: 17,),
           _description(),
           const SizedBox(height: 17,),
-          _bottomButton()
+          _bottomButton(context)
         ],
       ),
     );
@@ -68,7 +70,7 @@ class ExperimentGraphicItem extends StatelessWidget {
     );
   }
 
-  Widget _bottomButton() {
+  Widget _bottomButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
           vertical: 10, horizontal: 16
@@ -87,8 +89,9 @@ class ExperimentGraphicItem extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: (){
-          //TODO: 실험 생성 화면으로 이동
-          print("실헝 생성, $type");
+          type == ExperimentType.survey
+              ? Navigator.pushNamed(context, SurveyCreateScreen.routeName) // 설문 생성
+              : Navigator.pushNamed(context, PerformCreateScreen.routeName); // 수행 생성
         },
         child: Row(
           children: [

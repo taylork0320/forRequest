@@ -322,7 +322,7 @@ class _SurveyCreateScreenState extends State<SurveyCreateScreen> {
           ),
         ),
         const SizedBox(height: 32,),
-        Text("survey_experimenter_information".tr(),
+        Text("survey_experimenter_name".tr(),
           style: const TextStyle(
             color: Colors.black,
             fontSize: 16,

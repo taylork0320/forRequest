@@ -6,4 +6,8 @@ enum TypeGroup {
 
   final String label;
   const TypeGroup(this.label);
+
+  static List<String> getParticipantTypeTagList() {
+    return TypeGroup.values.map((type) => type.label).toList();
+  }
 }

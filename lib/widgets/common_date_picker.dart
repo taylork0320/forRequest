@@ -35,6 +35,7 @@ class CommonDatePicker extends StatelessWidget {
         ),
         child: Text(
           DateFormat('yyyy. MM. dd').format(selectedDate),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 16,

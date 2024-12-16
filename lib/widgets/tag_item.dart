@@ -8,28 +8,39 @@ class TagItem extends StatelessWidget {
   final String text;
   final ExperimentType type;
   final bool isPrimary; // 첫 번째 아이템 여부
+  final bool isLarge;
 
   const TagItem({
     super.key,
     required this.text,
     required this.type,
     this.isPrimary = false,
+    this.isLarge = false
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: isPrimary ? type.tagBackgroundColor : ColorStyles.tagBackground,
-            borderRadius: BorderRadius.circular(15)
+            color: isLarge
+                ? ColorStyles.primaryBlue
+                : isPrimary
+                    ? type.tagBackgroundColor
+                    : ColorStyles.tagBackground,
+            borderRadius: BorderRadius.circular(isLarge ? 24 : 15)),
+        padding: EdgeInsets.symmetric(
+            vertical: isLarge ? 14 : 4,
+            horizontal: isLarge ? 16 : 6,
         ),
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
         child: Text(
-          '#$text',
+          isLarge ? text : '#$text',
           style: TextStyle(
-              fontSize: 9,
-              color: isPrimary ? type.tagForegroundColor : ColorStyles.tagForeground
-          ),
+              fontSize: isLarge ? 14 : 9,
+              color: isLarge
+                  ? Colors.white
+                  : isPrimary
+                      ? type.tagForegroundColor
+                      : ColorStyles.tagForeground),
         )
     );
   }
@@ -39,17 +50,19 @@ class TagItem extends StatelessWidget {
 class TagList extends StatelessWidget {
   final List<String> tags;
   final ExperimentType type;
+  final bool isLarge;
 
   const TagList({
     super.key,
     required this.tags,
-    required this.type
+    required this.type,
+    this.isLarge = false
   });
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 5,
+      spacing: isLarge ? 8 : 5,
       runSpacing: 5,
       children: List.generate(
         tags.length,
@@ -57,6 +70,7 @@ class TagList extends StatelessWidget {
           text: tags[index],
           type: type,
           isPrimary: index == 0,
+          isLarge: isLarge,
         ),
       ),
     );

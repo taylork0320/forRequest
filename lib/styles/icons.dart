@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 class SvgIcons {
   static SvgPicture textLogo = SvgPicture.asset("assets/images/sasimee_text_logo.svg");
   static SvgPicture profile = SvgPicture.asset("assets/images/icons/ic_profile.svg");
+  static SvgPicture imageAdd = SvgPicture.asset("assets/images/icons/ic_image_add.svg");
 
   static SvgPicture arrowDotted = SvgPicture.asset("assets/images/icons/ic_arrow_dotted.svg");
   static SvgPicture arrowRight = SvgPicture.asset("assets/images/icons/ic_arrow_right.svg");
@@ -24,4 +25,6 @@ class PngImages {
 
   static Image surveyGraphic = Image.asset('assets/images/graphics/img_survey.png');
   static Image performGraphic = Image.asset('assets/images/graphics/img_perform.png');
+
+  static Image exPerimenterExample = Image.asset('assets/images/banners/experimenter_example.png');
 }

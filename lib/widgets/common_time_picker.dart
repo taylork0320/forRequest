@@ -32,10 +32,11 @@ class CommonTimePicker extends StatelessWidget {
         ),
         child: Text(
           '${selectedTime.format(context)}',
+          textAlign: TextAlign.center,
           style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.w500,
           ),
         ),
       ),
