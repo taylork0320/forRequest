@@ -1,29 +1,33 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sasimee/repositories/auth_repository.dart';
 
-import '../../repositories/login_repository.dart';
 import '../../utils/validator.dart';
 
 class LoginViewModel with ChangeNotifier {
-
-  late final LoginRepository _loginRepository;
+  late final AuthRepository _repository;
 
   final TextEditingController _emailController = TextEditingController();
+
   get emailController => _emailController;
 
   final TextEditingController _passwordController = TextEditingController();
+
   get passwordController => _passwordController;
 
   final FocusNode _emailFocusNode = FocusNode();
+
   get emailFocusNode => _emailFocusNode;
 
   final FocusNode _passwordFocusNode = FocusNode();
+
   get passwordFocusNode => _passwordFocusNode;
 
   bool _isLoginButtonEnabled = false;
+
   bool get isLoginButtonEnabled => _isLoginButtonEnabled;
 
   LoginViewModel() {
-    _loginRepository = LoginRepository();
+    _repository = AuthRepository();
     _emailController.addListener(_validateInputs);
     _passwordController.addListener(_validateInputs);
     _emailFocusNode.addListener(_onFocusChange);
@@ -40,7 +44,8 @@ class LoginViewModel with ChangeNotifier {
 
   /// 로그인 진행
   Future<bool> login() async {
-    var requestLogin = await _loginRepository.login(_emailController.text, _passwordController.text);
+    var requestLogin = await _repository.login(
+        _emailController.text, _passwordController.text);
 
     // 로그인 실패
     if (requestLogin == null) {
@@ -48,8 +53,8 @@ class LoginViewModel with ChangeNotifier {
     }
 
     // Access Token 및 Refresh Token 저장
-    _loginRepository.saveAccessToken(requestLogin.accessToken);
-    _loginRepository.saveRefreshToken(requestLogin.refreshToken);
+    _repository.saveAccessToken(requestLogin.accessToken);
+    _repository.saveRefreshToken(requestLogin.refreshToken);
 
     return true;
   }

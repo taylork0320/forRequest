@@ -1,25 +1,37 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/models/request/auth/post_register_request.dart';
+import 'package:sasimee/screens/signup/signup_complete_screen.dart';
 import 'package:sasimee/screens/signup/signup_tag_viewmodel.dart';
 import 'package:sasimee/screens/signup/views/signup_age_tag.dart';
 import 'package:sasimee/screens/signup/views/signup_area_tag.dart';
 import 'package:sasimee/screens/signup/views/signup_gender_tag.dart';
 import 'package:sasimee/screens/signup/views/signup_subject_tag.dart';
 import 'package:sasimee/screens/signup/views/signup_type_tag.dart';
-import 'package:sasimee/screens/signup/signup_complete_screen.dart';
 import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/utils/constants.dart';
 
 class SignupTagScreen extends StatelessWidget {
-  static String routeName = "/signup_tag";
+  static String routeName = "/login/register/tag";
 
-  const SignupTagScreen({super.key});
+  final PostRegisterRequest? request;
+
+  const SignupTagScreen({super.key, this.request});
 
   @override
   Widget build(BuildContext context) {
+    if (request == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pop();
+      });
+
+      return Container();
+    }
+
     return ChangeNotifierProvider(
-      create: (_) => SignupTagViewModel(),
+      create: (_) => SignupTagViewModel(request!),
       child: Builder(builder: (context) {
         final viewModel = Provider.of<SignupTagViewModel>(context);
 
@@ -53,17 +65,17 @@ class SignupTagScreen extends StatelessWidget {
                     Expanded(
                       child: Consumer<SignupTagViewModel>(
                           builder: (context, viewModel, _) {
-                            return IndexedStack(
-                              index: viewModel.currentStep,
-                              children: const [
-                                SignupAgeTag(),
-                                SignupAreaTag(),
-                                SignupGenderTag(),
-                                SignupTypeTag(),
-                                SignupSubjectTag(),
-                              ],
-                            );
-                          }),
+                        return IndexedStack(
+                          index: viewModel.currentStep,
+                          children: const [
+                            SignupAgeTag(),
+                            SignupAreaTag(),
+                            SignupGenderTag(),
+                            SignupTypeTag(),
+                            SignupSubjectTag(),
+                          ],
+                        );
+                      }),
                     ),
                     _bottomButtonLayout(context, viewModel),
                   ],
@@ -97,14 +109,32 @@ class SignupTagScreen extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: viewModel.isNextButtonEnabled
-                  ? () {
-                if (isLast) {
-                  Navigator.of(context)
-                      .pushNamed(SignupCompleteScreen.routeName);
-                } else {
-                  viewModel.goToNextStep();
-                }
-              }
+                  ? () async {
+                      if (isLast) {
+                        final response = await viewModel.signUp();
+                        if (!context.mounted) return;
+
+                        if (response != null) {
+                          if (response.status) {
+                            Navigator.of(context)
+                                .pushNamed(SignupCompleteScreen.routeName);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(response.message),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        } else {
+                          if (kDebugMode) {
+                            print('Response is null.');
+                          }
+                        }
+                      } else {
+                        viewModel.goToNextStep();
+                      }
+                    }
                   : null,
               child: Text(isLast ? 'selection_complete'.tr() : 'next'.tr()),
             ),

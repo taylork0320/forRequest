@@ -4,7 +4,7 @@ import 'package:sasimee/screens/main/main_screen.dart';
 import 'package:sasimee/styles/color_styles.dart';
 
 class SignupCompleteScreen extends StatefulWidget {
-  static String routeName = "/signup_complete";
+  static String routeName = "/login/register/tag/complete";
 
   const SignupCompleteScreen({super.key});
 

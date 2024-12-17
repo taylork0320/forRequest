@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/models/request/auth/post_register_request.dart';
 import 'package:sasimee/models/request/auth/post_token_reissue_request.dart';
 import 'package:sasimee/screens/login/login_screen.dart';
 import 'package:sasimee/screens/login/login_viewmodel.dart';
@@ -17,14 +18,15 @@ import 'package:sasimee/screens/mypage/mypage_main_screen.dart';
 import 'package:sasimee/screens/mypage/mypage_profile_screen.dart';
 import 'package:sasimee/screens/mypage/mypage_tag_screen.dart';
 import 'package:sasimee/screens/signup/signup_auth_screen.dart';
+import 'package:sasimee/screens/signup/signup_complete_screen.dart';
 import 'package:sasimee/screens/signup/signup_screen.dart';
 import 'package:sasimee/screens/signup/signup_tag_screen.dart';
-import 'package:sasimee/screens/signup/signup_complete_screen.dart';
 import 'package:sasimee/services/api/auth_api.dart';
 import 'package:sasimee/services/data/secure_storage_service.dart';
 import 'package:sasimee/services/network/dio_service.dart';
 import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/utils/constants.dart';
+
 import 'enums/experiment_type.dart';
 
 void main() async {
@@ -89,10 +91,15 @@ final route = {
   LoginScreen.routeName: (context) => const LoginScreen(),
   SignupScreen.routeName: (context) => const SignupScreen(),
   SignupAuthScreen.routeName: (context) {
-    String email = ModalRoute.of(context)!.settings.arguments as String;
-    return SignupAuthScreen(email: email);
+    final request =
+        ModalRoute.of(context)!.settings.arguments as PostRegisterRequest?;
+    return SignupAuthScreen(request: request);
   },
-  SignupTagScreen.routeName: (context) => const SignupTagScreen(),
+  SignupTagScreen.routeName: (context) {
+    final request =
+        ModalRoute.of(context)!.settings.arguments as PostRegisterRequest?;
+    return SignupTagScreen(request: request);
+  },
   SignupCompleteScreen.routeName: (context) => const SignupCompleteScreen(),
   MainScreen.routeName: (context) => const MainScreen(),
   ExperimentScreen.routeName: (context) {

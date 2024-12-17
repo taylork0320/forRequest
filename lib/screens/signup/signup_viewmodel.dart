@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sasimee/models/request/auth/post_register_request.dart';
 
 import '../../utils/validator.dart';
 
@@ -98,7 +99,7 @@ class SignupViewModel with ChangeNotifier {
     _mobileNumberFocusNode.dispose();
   }
 
-  Future<bool> signUp() async {
+  PostRegisterRequest? next() {
     final email = _emailController.text.trim();
     final password1 = _password1Controller.text.trim();
     final password2 = _password2Controller.text.trim();
@@ -108,9 +109,16 @@ class SignupViewModel with ChangeNotifier {
     if (password1 != password2) {
       _passwordErrorMessage = 'not_equal_password'.tr();
       notifyListeners();
-      return false;
+      return null;
     }
 
-    return true;
+    return PostRegisterRequest(
+      email: email,
+      password1: password1,
+      password2: password2,
+      name: name,
+      phoneNumber: mobileNumber,
+      tags: [],
+    );
   }
 }

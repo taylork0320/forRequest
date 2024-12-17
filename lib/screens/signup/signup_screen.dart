@@ -7,7 +7,7 @@ import 'package:sasimee/styles/color_styles.dart';
 import 'package:sasimee/widgets/common_text_field.dart';
 
 class SignupScreen extends StatefulWidget {
-  static String routeName = "/signup";
+  static String routeName = "/login/register";
 
   const SignupScreen({super.key});
 
@@ -56,21 +56,21 @@ class _SignupScreenState extends State<SignupScreen> {
                             const SizedBox(height: 20),
                             CommonTextField(
                               textEditingController:
-                              viewModel.password1Controller,
+                                  viewModel.password1Controller,
                               type: TextFieldType.password,
                               focusNode: viewModel.password1FocusNode,
                             ),
                             const SizedBox(height: 20),
                             Consumer<SignupViewModel>(
                                 builder: (context, viewModel, _) {
-                                  return CommonTextField(
-                                    textEditingController:
+                              return CommonTextField(
+                                textEditingController:
                                     viewModel.password2Controller,
-                                    type: TextFieldType.passwordConfirmation,
-                                    focusNode: viewModel.password2FocusNode,
-                                    error: viewModel.passwordErrorMessage,
-                                  );
-                                }),
+                                type: TextFieldType.passwordConfirmation,
+                                focusNode: viewModel.password2FocusNode,
+                                error: viewModel.passwordErrorMessage,
+                              );
+                            }),
                             const SizedBox(height: 26),
                             CommonTextField(
                               textEditingController: viewModel.nameController,
@@ -80,7 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             const SizedBox(height: 20),
                             CommonTextField(
                               textEditingController:
-                              viewModel.mobileNumberController,
+                                  viewModel.mobileNumberController,
                               type: TextFieldType.mobileNumber,
                               focusNode: viewModel.mobileNumberFocusNode,
                             ),
@@ -119,13 +119,11 @@ class _SignupScreenState extends State<SignupScreen> {
           onPressed: () async {
             if (!viewModel.isSignupButtonEnabled) return;
 
-            final result = await viewModel.signUp();
-            if (!context.mounted) return;
-
-            if (result) {
+            final result = viewModel.next();
+            if (result != null) {
               Navigator.of(context).pushNamed(
                 SignupAuthScreen.routeName,
-                arguments: viewModel.emailController.text.trim(),
+                arguments: result,
               );
             }
           },

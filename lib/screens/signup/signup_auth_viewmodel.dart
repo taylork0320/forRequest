@@ -1,10 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:sasimee/models/request/auth/post_register_request.dart';
+import 'package:sasimee/models/response/default_response.dart';
+import 'package:sasimee/repositories/auth_repository.dart';
 
 class SignupAuthViewModel with ChangeNotifier {
+  late final _repository = AuthRepository();
+
+  final PostRegisterRequest request;
+
   final TextEditingController _authenticationCodeController =
-  TextEditingController();
+      TextEditingController();
 
   get authenticationCodeController => _authenticationCodeController;
 
@@ -19,7 +26,7 @@ class SignupAuthViewModel with ChangeNotifier {
   DateTime _expiredTime = DateTime.now().add(const Duration(minutes: 3));
 
   late final Stream<Duration> _timer =
-  Stream.periodic(const Duration(milliseconds: 200), (_) {
+      Stream.periodic(const Duration(milliseconds: 200), (_) {
     return _expiredTime.difference(DateTime.now());
   }).asBroadcastStream();
 
@@ -28,12 +35,14 @@ class SignupAuthViewModel with ChangeNotifier {
   late final StreamSubscription<Duration> _subscription;
   Duration? _duration;
 
-  SignupAuthViewModel() {
+  SignupAuthViewModel(this.request) {
     _authenticationCodeController.addListener(_validateInputs);
     _subscription = timer.listen((duration) {
       _duration = duration;
       _validateInputs();
     });
+
+    requestOtp();
   }
 
   void _validateInputs() {
@@ -58,5 +67,14 @@ class SignupAuthViewModel with ChangeNotifier {
   Future<void> requestOtp() async {
     _authenticationCodeController.clear();
     _expiredTime = DateTime.now().add(const Duration(minutes: 3));
+
+    await _repository.sendAuthEmail(request.email);
+  }
+
+  Future<DefaultResponse?> verify() {
+    return _repository.verifyEmail(
+      request.email,
+      _authenticationCodeController.text.trim(),
+    );
   }
 }
