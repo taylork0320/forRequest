@@ -4,35 +4,27 @@ import '../../utils/validator.dart';
 
 class MypageProfileViewModel with ChangeNotifier {
   final TextEditingController _nameController = TextEditingController();
-
   TextEditingController get nameController => _nameController;
 
   final TextEditingController _emailController = TextEditingController();
-
   TextEditingController get emailController => _emailController;
 
   final TextEditingController _mobileNumberController = TextEditingController();
-
   TextEditingController get mobileNumberController => _mobileNumberController;
 
   final FocusNode _nameFocusNode = FocusNode();
-
   FocusNode get nameFocusNode => _nameFocusNode;
 
   final FocusNode _emailFocusNode = FocusNode();
-
   FocusNode get emailFocusNode => _emailFocusNode;
 
   final FocusNode _mobileNumberFocusNode = FocusNode();
-
   FocusNode get mobileNumberFocusNode => _mobileNumberFocusNode;
 
   bool _isButtonEnabled = false;
-
   bool get isButtonEnabled => _isButtonEnabled;
 
   String? _profileUrl;
-
   String? get profileUrl => _profileUrl;
 
   set profileUrl(String? value) {

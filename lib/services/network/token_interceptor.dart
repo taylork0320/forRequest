@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:sasimee/models/request/auth/post_token_reissue_request.dart';
 
 import '../../utils/constants.dart';
 import '../../utils/logger.dart';
@@ -37,6 +38,8 @@ class TokenInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       logger.w(
           "[Network / [${err.requestOptions.method}] ${err.requestOptions.uri}] Unauthorized");
+      // 저장된 Access Token 꺼내기
+      await secureStorage.read(key: ACCESS_TOKEN_STORAGE_KEY);
       // 저장된 Refresh Token 조회
       final refreshToken =
           await secureStorage.read(key: REFRESH_TOKEN_STORAGE_KEY);
@@ -57,23 +60,25 @@ class TokenInterceptor extends Interceptor {
 
       try {
         // Access Token 재요청
-        final response = await client.putNewAccessToken();
+        final response = await client.postTokenReissue(
+          PostTokenReissueRequest(accessToken: null, refreshToken: refreshToken)
+        );
 
-        // // Response에 Result가 없을 경우 에러
-        // if (response.result == null) {
-        //   return handler.reject(err);
-        // }
-        //
-        // // 신규 토큰 저장
-        // await secureStorage.write(
-        //     key: ACCESS_TOKEN_STORAGE_KEY, value: response.result?.accessToken);
-        // await secureStorage.write(
-        //     key: REFRESH_TOKEN_STORAGE_KEY,
-        //     value: response.result?.refreshToken);
-        //
-        // // 헤더에 엑세스 토큰 변경
-        // err.requestOptions.headers['Authorization'] =
-        //     'Bearer ${response.result?.accessToken}';
+        //TODO: Response에 Result가 없을 경우 에러
+        if (response.accessToken == null) {
+          return handler.reject(err);
+        }
+
+        // 신규 토큰 저장
+        await secureStorage.write(
+            key: ACCESS_TOKEN_STORAGE_KEY, value: response.accessToken);
+        await secureStorage.write(
+            key: REFRESH_TOKEN_STORAGE_KEY,
+            value: response.refreshToken);
+
+        // 헤더에 엑세스 토큰 변경
+        err.requestOptions.headers['Authorization'] =
+            'Bearer ${response.accessToken}';
 
         // 다시 요청
         return handler.resolve(await dio.request(err.requestOptions.path,

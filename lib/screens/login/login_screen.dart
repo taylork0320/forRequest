@@ -132,12 +132,24 @@ class LoginScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-          onPressed: () {
-            viewModel.isLoginButtonEnabled
-                ? Navigator.pushNamedAndRemoveUntil(
-                context, MainScreen.routeName, (route) => false)
-                : null;
-          },
+          onPressed: viewModel.isLoginButtonEnabled
+              ? () async {
+                  // 로그인 진행
+                  var loginResult = await viewModel.login();
+                  if (loginResult) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, MainScreen.routeName, (route) => false);
+                  } else {
+                    // 로그인 실패 시 토스트 메시지 표시
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('login_error'.tr()),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                }
+              : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: viewModel.isLoginButtonEnabled
                 ? ColorStyles.primaryBlue

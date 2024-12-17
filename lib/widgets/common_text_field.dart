@@ -16,8 +16,8 @@ class TextFieldType {
   static final name = TextFieldType("name_hint".tr(), SvgIcons.person);
   static final mobileNumber =
       TextFieldType("mobile_number_hint".tr(), SvgIcons.call);
-  static final authenticationNumber = TextFieldType(
-      "enter_authentication_number".tr().replaceAll('\n', ' '), null);
+  static final authenticationCode = TextFieldType(
+      "enter_authentication_code".tr().replaceAll('\n', ' '), null);
 
   final String hintText;
   final SvgPicture? prefixIcon;
@@ -59,8 +59,8 @@ class _CommonTextFieldState extends State<CommonTextField> {
     final isPasswordField = widget.type == TextFieldType.password ||
         widget.type == TextFieldType.passwordConfirmation;
     final isMobileNumberField = widget.type == TextFieldType.mobileNumber;
-    final isAuthenticationNumberField =
-        widget.type == TextFieldType.authenticationNumber;
+    final isAuthenticationCodeField =
+        widget.type == TextFieldType.authenticationCode;
 
     final phoneCode = isMobileNumberField
         ? CountryWithPhoneCode(
@@ -89,7 +89,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
           controller: widget.textEditingController,
           maxLength: isMobileNumberField
               ? 13
-              : (isAuthenticationNumberField ? 6 : widget.maxLength),
+              : (isAuthenticationCodeField ? 6 : widget.maxLength),
           inputFormatters: isMobileNumberField
               ? [
                   LibPhonenumberTextFormatter(
@@ -100,20 +100,19 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     additionalDigits: 3,
                   ),
                 ]
-              : (isAuthenticationNumberField
+              : (isAuthenticationCodeField
                   ? [
-                      FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(6),
                     ]
                   : null),
-          style: isAuthenticationNumberField
+          style: isAuthenticationCodeField
               ? const TextStyle(
                   fontSize: 14,
                   letterSpacing: 6,
                 )
               : null,
           keyboardType:
-              isAuthenticationNumberField ? TextInputType.number : null,
+              isAuthenticationCodeField ? TextInputType.text : null,
           cursorColor: Colors.black54,
           obscureText: isPasswordField ? _obscureText : false,
           decoration: InputDecoration(

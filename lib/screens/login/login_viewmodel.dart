@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../repositories/login_repository.dart';
 import '../../utils/validator.dart';
 
 class LoginViewModel with ChangeNotifier {
+
+  late final LoginRepository _loginRepository;
 
   final TextEditingController _emailController = TextEditingController();
   get emailController => _emailController;
@@ -20,9 +23,35 @@ class LoginViewModel with ChangeNotifier {
   bool get isLoginButtonEnabled => _isLoginButtonEnabled;
 
   LoginViewModel() {
+    _loginRepository = LoginRepository();
     _emailController.addListener(_validateInputs);
     _passwordController.addListener(_validateInputs);
     _emailFocusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+  }
+
+  /// 로그인 진행
+  Future<bool> login() async {
+    var requestLogin = await _loginRepository.login(_emailController.text, _passwordController.text);
+
+    // 로그인 실패
+    if (requestLogin == null) {
+      return false;
+    }
+
+    // Access Token 및 Refresh Token 저장
+    _loginRepository.saveAccessToken(requestLogin.accessToken);
+    _loginRepository.saveRefreshToken(requestLogin.refreshToken);
+
+    return true;
   }
 
   void _validateInputs() {
@@ -35,14 +64,5 @@ class LoginViewModel with ChangeNotifier {
 
   void _onFocusChange() {
     notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
   }
 }

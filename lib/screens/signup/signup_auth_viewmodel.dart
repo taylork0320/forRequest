@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
 class SignupAuthViewModel with ChangeNotifier {
-  final TextEditingController _authenticationNumberController =
+  final TextEditingController _authenticationCodeController =
   TextEditingController();
 
-  get authenticationNumberController => _authenticationNumberController;
+  get authenticationCodeController => _authenticationCodeController;
 
-  final FocusNode _authenticationNumberFocusNode = FocusNode();
+  final FocusNode _authenticationCodeFocusNode = FocusNode();
 
-  get authenticationNumberFocusNode => _authenticationNumberFocusNode;
+  get authenticationCodeFocusNode => _authenticationCodeFocusNode;
 
   bool _isButtonEnabled = false;
 
@@ -29,7 +29,7 @@ class SignupAuthViewModel with ChangeNotifier {
   Duration? _duration;
 
   SignupAuthViewModel() {
-    _authenticationNumberController.addListener(_validateInputs);
+    _authenticationCodeController.addListener(_validateInputs);
     _subscription = timer.listen((duration) {
       _duration = duration;
       _validateInputs();
@@ -37,7 +37,7 @@ class SignupAuthViewModel with ChangeNotifier {
   }
 
   void _validateInputs() {
-    final code = _authenticationNumberController.text.trim();
+    final code = _authenticationCodeController.text.trim();
     final seconds = _duration?.inSeconds ?? -1;
 
     _isButtonEnabled = code.length == 6 && seconds > 0;
@@ -49,14 +49,14 @@ class SignupAuthViewModel with ChangeNotifier {
   void dispose() {
     super.dispose();
 
-    _authenticationNumberController.dispose();
-    _authenticationNumberFocusNode.dispose();
+    _authenticationCodeController.dispose();
+    _authenticationCodeFocusNode.dispose();
 
     _subscription.cancel();
   }
 
   Future<void> requestOtp() async {
-    _authenticationNumberController.clear();
+    _authenticationCodeController.clear();
     _expiredTime = DateTime.now().add(const Duration(minutes: 3));
   }
 }

@@ -84,7 +84,7 @@ class _MypageTagScreenState extends State<MypageTagScreen> {
                             items:
                                 TypeGroup.values.map((e) => e.label).toList(),
                             type: TagType.experiment,
-                            isMultiSelect: false,
+                            isMultiSelect: true,
                             initialSelection: viewModel.selectedTypeGroups,
                             onSelectionChanged: (values) =>
                                 viewModel.setSelectedTypeGroups(values),
@@ -99,7 +99,7 @@ class _MypageTagScreenState extends State<MypageTagScreen> {
                             items:
                                 GenderGroup.values.map((e) => e.label).toList(),
                             type: TagType.experiment,
-                            isMultiSelect: false,
+                            isMultiSelect: true,
                             initialSelection: viewModel.selectedGenderGroups,
                             onSelectionChanged: (values) =>
                                 viewModel.setSelectedGenderGroups(values),

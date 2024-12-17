@@ -1,5 +1,5 @@
 /// BASE URL
-const String BASE_URL = "https://~"; //TODO: 서버 주소 기입
+const String BASE_URL = "http://144.24.64.142:8080";
 
 /// STORAGE KEY
 const String ACCESS_TOKEN_STORAGE_KEY = "ACCESS_TOKEN";

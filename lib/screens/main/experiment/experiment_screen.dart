@@ -14,7 +14,10 @@ class ExperimentScreen extends StatelessWidget {
 
   final ExperimentType type;
 
-  const ExperimentScreen({super.key, required this.type});
+  const ExperimentScreen({
+    super.key,
+    required this.type
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +44,9 @@ class ExperimentScreen extends StatelessWidget {
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
-      scrolledUnderElevation: 0,
-      // 스크롤 시 앱바가 어두워지는 현상 제거
+      scrolledUnderElevation: 0, // 스크롤 시 앱바가 어두워지는 현상 제거
       backgroundColor: Colors.white,
-      titleSpacing: 22,
-      // 좌측 여백
+      titleSpacing: 22, // 좌측 여백
       title: Center(
         child: SizedBox(
           width: 28,
@@ -80,10 +81,15 @@ class ExperimentScreen extends StatelessWidget {
       indicatorWeight: 3,
       indicatorSize: TabBarIndicatorSize.tab,
       labelColor: ColorStyles.primaryBlue,
-      labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      labelStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600
+      ),
       unselectedLabelColor: Colors.black,
-      unselectedLabelStyle:
-          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      unselectedLabelStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500
+      ),
       tabs: [
         Tab(text: '설문형'),
         Tab(text: '수행형'),

@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:sasimee/models/request/auth/post_token_reissue_request.dart';
 import 'package:sasimee/screens/login/login_screen.dart';
 import 'package:sasimee/screens/login/login_viewmodel.dart';
 import 'package:sasimee/screens/main/experiment/experiment_screen.dart';
@@ -15,11 +17,14 @@ import 'package:sasimee/screens/mypage/mypage_main_screen.dart';
 import 'package:sasimee/screens/mypage/mypage_profile_screen.dart';
 import 'package:sasimee/screens/mypage/mypage_tag_screen.dart';
 import 'package:sasimee/screens/signup/signup_auth_screen.dart';
-import 'package:sasimee/screens/signup/signup_complete_screen.dart';
 import 'package:sasimee/screens/signup/signup_screen.dart';
 import 'package:sasimee/screens/signup/signup_tag_screen.dart';
+import 'package:sasimee/screens/signup/signup_complete_screen.dart';
+import 'package:sasimee/services/api/auth_api.dart';
+import 'package:sasimee/services/data/secure_storage_service.dart';
+import 'package:sasimee/services/network/dio_service.dart';
 import 'package:sasimee/styles/color_styles.dart';
-
+import 'package:sasimee/utils/constants.dart';
 import 'enums/experiment_type.dart';
 
 void main() async {
@@ -32,6 +37,38 @@ void main() async {
     imagePickerImplementation.useAndroidPhotoPicker = true;
   }
 
+  final FlutterSecureStorage secureStorage = SecureStorageService().get();
+  final AuthApi client = AuthApi(DioService().get());
+
+  Future<bool> isLoggedIn() async {
+    // Access Token이 Storage에 없을 경우 false
+    if (!(await secureStorage.containsKey(key: ACCESS_TOKEN_STORAGE_KEY))) {
+      return false;
+    }
+
+    String? accessToken =
+        await secureStorage.read(key: ACCESS_TOKEN_STORAGE_KEY);
+    String? refreshToken =
+        await secureStorage.read(key: REFRESH_TOKEN_STORAGE_KEY);
+
+    try {
+      if (accessToken != null) {
+        var response = await client.postTokenReissue(PostTokenReissueRequest(
+            accessToken: accessToken, refreshToken: refreshToken.toString()));
+        print("자동 로그인 성공");
+        //TODO: 응답 성공 여부 판단 필요
+        return true;
+      }
+    } catch (e) {
+      print("자동 로그인 실패, $e");
+      return false;
+    }
+
+    return false;
+  }
+
+  bool checkLoginResult = await isLoggedIn();
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => LoginViewModel()),
@@ -40,7 +77,9 @@ void main() async {
       supportedLocales: const [Locale('ko')], // 지원 언어 목록
       path: 'assets/translations', // 번역 파일 위치
       fallbackLocale: const Locale('ko'), // 기본 언어 설정
-      child: SasimeeApp(),
+      child: SasimeeApp(
+        isLoggedIn: checkLoginResult,
+      ),
     ),
   ));
 }
@@ -73,7 +112,9 @@ final route = {
 };
 
 class SasimeeApp extends StatelessWidget {
-  const SasimeeApp({super.key});
+  final bool isLoggedIn;
+
+  const SasimeeApp({super.key, required this.isLoggedIn});
 
   // This widget is the root of your application.
   @override
@@ -109,7 +150,7 @@ class SasimeeApp extends StatelessWidget {
           scrolledUnderElevation: 0,
         ),
       ),
-      initialRoute: MainScreen.routeName,
+      initialRoute: isLoggedIn ? MainScreen.routeName : LoginScreen.routeName,
       routes: route,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

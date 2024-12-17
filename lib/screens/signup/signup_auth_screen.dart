@@ -54,7 +54,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'enter_authentication_number'.tr(),
+                            'enter_authentication_code'.tr(),
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
@@ -62,7 +62,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'sent_authentication_number'.tr(
+                            'sent_authentication_code'.tr(
                               namedArgs: {'email': widget.email},
                             ),
                             style: const TextStyle(
@@ -88,10 +88,10 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
 
                                 return CommonTextField(
                                   textEditingController:
-                                  viewModel.authenticationNumberController,
-                                  type: TextFieldType.authenticationNumber,
+                                  viewModel.authenticationCodeController,
+                                  type: TextFieldType.authenticationCode,
                                   focusNode:
-                                  viewModel.authenticationNumberFocusNode,
+                                  viewModel.authenticationCodeFocusNode,
                                   suffix: IntrinsicWidth(
                                     child: Center(
                                       child: Padding(
@@ -151,7 +151,7 @@ class _SignupAuthScreenState extends State<SignupAuthScreen> {
           ),
           child: Text(viewModel.isButtonEnabled
               ? 'enter_complete'.tr()
-              : 'request_authentication_number'.tr())),
+              : 'request_authentication_code'.tr())),
     );
   }
 
