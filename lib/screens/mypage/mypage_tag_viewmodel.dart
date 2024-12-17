@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sasimee/models/user_tag.dart';
+import 'package:sasimee/repositories/auth_repository.dart';
 
 class MypageTagViewModel with ChangeNotifier {
+  late final _repository = AuthRepository();
+  var isInitialized = false;
+
   List<String> _selectedAgeGroups = [];
 
   get selectedAgeGroups => _selectedAgeGroups;
@@ -25,7 +30,31 @@ class MypageTagViewModel with ChangeNotifier {
 
   get isButtonEnabled => _isButtonEnabled;
 
-  MypageTagViewModel();
+  MypageTagViewModel() {
+    _repository.getTag().then((tag) {
+      _selectedAgeGroups = tag
+          .where((e) => e.category == 'AGE_GROUP')
+          .map((e) => e.name)
+          .toList();
+
+      _selectedAreaGroups =
+          tag.where((e) => e.category == 'REGION').map((e) => e.name).toList();
+
+      _selectedGenderGroups =
+          tag.where((e) => e.category == 'GENDER').map((e) => e.name).toList();
+
+      _selectedTypeGroups =
+          tag.where((e) => e.category == 'CLASS').map((e) => e.name).toList();
+
+      _selectedSubjectGroups =
+          tag.where((e) => e.category == 'TOPIC').map((e) => e.name).toList();
+
+      _validate();
+      isInitialized = true;
+
+      notifyListeners();
+    });
+  }
 
   @override
   void dispose() {
@@ -70,7 +99,15 @@ class MypageTagViewModel with ChangeNotifier {
         _selectedSubjectGroups.isNotEmpty;
   }
 
-  Future<bool> done() async {
-    return true;
+  Future<void> done() {
+    final tag = [
+      ..._selectedAgeGroups.map((e) => UserTag(name: e, category: 'AGE_GROUP')),
+      ..._selectedAreaGroups.map((e) => UserTag(name: e, category: 'REGION')),
+      ..._selectedGenderGroups.map((e) => UserTag(name: e, category: 'GENDER')),
+      ..._selectedTypeGroups.map((e) => UserTag(name: e, category: 'CLASS')),
+      ..._selectedSubjectGroups.map((e) => UserTag(name: e, category: 'TOPIC')),
+    ];
+
+    return _repository.modifyTag(tag);
   }
 }

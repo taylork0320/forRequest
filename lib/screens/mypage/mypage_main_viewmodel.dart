@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sasimee/models/response/mypage/profile_response.dart';
+import 'package:sasimee/models/response/auth/get_profile_response.dart';
 import 'package:sasimee/repositories/auth_repository.dart';
 
 class MypageMainViewModel with ChangeNotifier {

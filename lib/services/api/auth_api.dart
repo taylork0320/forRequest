@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:sasimee/models/request/auth/patch_profile_request.dart';
 import 'package:sasimee/models/request/auth/post_email_send_request.dart';
 import 'package:sasimee/models/request/auth/post_email_verify_request.dart';
-import 'package:sasimee/models/request/auth/post_profile_request.dart';
 import 'package:sasimee/models/request/auth/post_register_request.dart';
+import 'package:sasimee/models/response/auth/get_profile_response.dart';
 import 'package:sasimee/models/response/auth/post_email_send_response.dart';
 import 'package:sasimee/models/response/auth/post_login_response.dart';
 import 'package:sasimee/models/response/default_response.dart';
-import 'package:sasimee/models/response/mypage/profile_response.dart';
+import 'package:sasimee/models/user_tag.dart';
 
 import '../../models/request/auth/post_login_request.dart';
 import '../../models/request/auth/post_token_reissue_request.dart';
@@ -42,9 +43,17 @@ abstract class AuthApi {
 
   // 프로필 가져오기
   @GET("/user/mypage/profile")
-  Future<ProfileResponse> getProfile();
+  Future<GetProfileResponse> getProfile();
 
   // 프로필 변경
   @PATCH("/user/mypage/profile/modifiy")
-  Future<void> modifyProfile(@Body() PostProfileRequest request);
+  Future<void> modifyProfile(@Body() PatchProfileRequest request);
+
+  // 태그 가져오기
+  @GET("/user/mypage/tag")
+  Future<List<UserTag>> getTag();
+
+  //  태그 변경
+  @PATCH("/user/mypage/tag/modify")
+  Future<void> modifyTag(@Body() List<UserTag> tag);
 }
