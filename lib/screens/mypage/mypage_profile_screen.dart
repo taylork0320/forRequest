@@ -119,37 +119,20 @@ class _MypageProfileScreenState extends State<MypageProfileScreen> {
                     const SizedBox(height: 48),
                     CommonTextField(
                       textEditingController: viewModel.emailController,
-                      type: TextFieldType.email,
+                      type: TextFieldType.profileEmail,
                       focusNode: viewModel.emailFocusNode,
-                      showPrefix: false,
                     ),
                     const SizedBox(height: 20),
                     CommonTextField(
                       textEditingController: viewModel.nameController,
-                      type: TextFieldType.name,
+                      type: TextFieldType.profileName,
                       focusNode: viewModel.nameFocusNode,
-                      showPrefix: false,
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.grey,
-                        ),
-                      ),
                     ),
                     const SizedBox(height: 20),
                     CommonTextField(
                       textEditingController: viewModel.mobileNumberController,
-                      type: TextFieldType.mobileNumber,
+                      type: TextFieldType.profileMobileNumber,
                       focusNode: viewModel.mobileNumberFocusNode,
-                      showPrefix: false,
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.grey,
-                        ),
-                      ),
                     ),
                     const Spacer(),
                     Consumer<MypageProfileViewModel>(
@@ -158,12 +141,10 @@ class _MypageProfileScreenState extends State<MypageProfileScreen> {
                           onPressed: () async {
                             if (!viewModel.isButtonEnabled) return;
 
-                            final result = await viewModel.done();
+                            await viewModel.update();
                             if (!context.mounted) return;
 
-                            if (result) {
-                              Navigator.of(context).pop();
-                            }
+                            Navigator.of(context).pop();
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 0),

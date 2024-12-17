@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:sasimee/models/request/auth/post_email_send_request.dart';
 import 'package:sasimee/models/request/auth/post_email_verify_request.dart';
+import 'package:sasimee/models/request/auth/post_profile_request.dart';
 import 'package:sasimee/models/request/auth/post_register_request.dart';
 import 'package:sasimee/models/response/auth/post_email_send_response.dart';
 import 'package:sasimee/models/response/auth/post_login_response.dart';
@@ -42,4 +43,8 @@ abstract class AuthApi {
   // 프로필 가져오기
   @GET("/user/mypage/profile")
   Future<ProfileResponse> getProfile();
+
+  // 프로필 변경
+  @PATCH("/user/mypage/profile/modifiy")
+  Future<void> modifyProfile(@Body() PostProfileRequest request);
 }

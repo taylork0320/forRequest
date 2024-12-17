@@ -58,6 +58,8 @@ class _HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<MypageMainViewModel>(context);
+
     return Padding(
       padding: const EdgeInsets.only(
         left: 24,
@@ -91,13 +93,16 @@ class _HeaderWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      '이름',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    Consumer<MypageMainViewModel>(
+                        builder: (context, viewModel, _) {
+                      return Text(
+                        viewModel.profile?.name ?? '',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 5),
                     IntrinsicHeight(
                       child: Row(
@@ -106,8 +111,11 @@ class _HeaderWidget extends StatelessWidget {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).pushNamed(MypageProfileScreen.routeName);
+                              onTap: () async {
+                                await Navigator.of(context)
+                                    .pushNamed(MypageProfileScreen.routeName);
+
+                                viewModel.refresh();
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -143,7 +151,8 @@ class _HeaderWidget extends StatelessWidget {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).pushNamed(MypageTagScreen.routeName);
+                                Navigator.of(context)
+                                    .pushNamed(MypageTagScreen.routeName);
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -183,7 +192,7 @@ class _HeaderWidget extends StatelessWidget {
               vertical: 4,
             ),
             child:
-            Consumer<MypageMainViewModel>(builder: (context, viewModel, _) {
+                Consumer<MypageMainViewModel>(builder: (context, viewModel, _) {
               final index = viewModel.index;
 
               return Row(
@@ -209,7 +218,7 @@ class _HeaderWidget extends StatelessWidget {
                                 'assets/images/icons/ic_checkbox.svg',
                                 colorFilter: index == 0
                                     ? const ColorFilter.mode(
-                                    Colors.white, BlendMode.srcATop)
+                                        Colors.white, BlendMode.srcATop)
                                     : null,
                               ),
                               const SizedBox(width: 3),
@@ -249,7 +258,7 @@ class _HeaderWidget extends StatelessWidget {
                                 'assets/images/icons/ic_people.svg',
                                 colorFilter: index == 1
                                     ? const ColorFilter.mode(
-                                    Colors.white, BlendMode.srcATop)
+                                        Colors.white, BlendMode.srcATop)
                                     : null,
                               ),
                               const SizedBox(width: 3),
